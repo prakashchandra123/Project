@@ -1,0 +1,152 @@
+import turtle
+import time
+
+wn=turtle.Screen()
+wn.title("Flappy Bird by Prakash")
+wn.bgcolor("blue")
+wn.bgpic("background.gif")
+wn.setup(width=500,height=800)
+wn.tracer(0)
+#register shapes
+wn.register_shape("background.gif")
+
+player = turtle.Turtle()
+player.speed(0)
+player.penup()
+player.color("yellow")
+player.shape("turtle")
+player.shapesize(stretch_wid=3,stretch_len=3,outline=None)
+player.goto(-200,0)
+player.dx = 0
+player.dy = 1
+
+
+
+
+
+pipe1_top = turtle.Turtle()
+pipe1_top.speed(0)
+pipe1_top.penup()
+pipe1_top.color("green")
+pipe1_top.shape("square")
+pipe1_top.shapesize(stretch_wid=18,stretch_len=2,outline=None)
+pipe1_top.goto(300,250)
+pipe1_top.dx = -2
+pipe1_top.dy = 0
+
+pipe1_bottom = turtle.Turtle()
+pipe1_bottom.speed(0)
+pipe1_bottom.penup()
+pipe1_bottom.color("green")
+pipe1_bottom.shape("square")
+pipe1_bottom.shapesize(stretch_wid=18,stretch_len=2,outline=None)
+pipe1_bottom.goto(300,-250)
+pipe1_bottom.dx = -2
+pipe1_bottom.dy = 0
+
+pipe2_top = turtle.Turtle()
+pipe2_top.speed(0)
+pipe2_top.penup()
+pipe2_top.color("green")
+pipe2_top.shape("square")
+pipe2_top.shapesize(stretch_wid=18,stretch_len=2,outline=None)
+pipe2_top.goto(600,300)
+pipe2_top.dx = -2
+pipe2_top.dy = 0
+
+pipe2_bottom = turtle.Turtle()
+pipe2_bottom.speed(0)
+pipe2_bottom.penup()
+pipe2_bottom.color("green")
+pipe2_bottom.shape("square")
+pipe2_bottom.shapesize(stretch_wid=18,stretch_len=2,outline=None)
+pipe2_bottom.goto(600,-300)
+pipe2_bottom.dx = -2
+pipe2_bottom.dy = 0
+
+gravity = -0.2
+#Define function/ method
+def go_up():
+    player.dy +=8
+    if player.dy > 8:
+        player.dy = 8
+
+
+#Keyboard binding
+wn.listen()
+wn.onkeypress(go_up,'space')
+
+
+#Main Game Loop
+while True:
+    #pause
+    time.sleep(0.02)
+    #update screen
+    wn.update()
+
+    #add gravity
+    player.dy += gravity
+    # Move player
+    y = player.ycor()
+    y +=player.dy
+    player.sety(y)
+
+    #move the pipes
+    x = pipe1_top.xcor()
+    x += pipe1_top.dx
+    pipe1_top.setx(x)
+
+    x = pipe1_bottom.xcor()
+    x += pipe1_bottom.dx
+    pipe1_bottom.setx(x)
+    #return pipes to start
+    if pipe1_top.xcor() < -350:
+        pipe1_top.setx(350)
+        pipe1_bottom.setx(350)
+     #move the pipes2
+    x = pipe2_top.xcor()
+    x += pipe2_top.dx
+    pipe2_top.setx(x)
+
+    x = pipe2_bottom.xcor()
+    x += pipe2_bottom.dx
+    pipe2_bottom.setx(x)
+    #return pipes to start
+    if pipe2_top.xcor() < -350:
+        pipe2_top.setx(350)
+        pipe2_bottom.setx(350)
+
+
+
+    #checks for collisions with pipes
+    #pipe1
+    if player.xcor() + 30 > pipe1_top.xcor() - 10 and player.xcor() - 10 < pipe1_top.xcor() + 30:
+        if (player.ycor() + 30 > pipe1_bottom.ycor() - 180) or player.xcor() - 10 < pipe1_bottom.ycor() + 180:
+            print("x collisions")
+    else:
+        print("no collision")
+
+#checks for collisions with pipes
+    #pipe1
+    if player.xcor() + 30 > pipe2_top.xcor() - 10 and player.xcor() - 10 < pipe2_top.xcor() + 30:
+        if (player.ycor() + 30 > pipe2_bottom.ycor() - 180) or player.xcor() - 10 < pipe2_bottom.ycor() + 180:
+            print("x collisions")
+        else:
+            print("no collision")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+wn.mainloop()
